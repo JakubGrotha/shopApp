@@ -1,6 +1,7 @@
 package com.example.shopApp.product
 
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
-interface ProductRepository : JpaRepository<Product, Long> {
-}
+@Repository
+interface ProductRepository : JpaRepository<Product, Long>
