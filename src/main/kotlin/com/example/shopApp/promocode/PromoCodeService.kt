@@ -5,9 +5,10 @@ import com.example.shopApp.promocode.model.NewPromoCodeRequest
 import com.example.shopApp.promocode.model.PromoCode
 import com.example.shopApp.promocode.model.PromoCodeDto
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.time.LocalDate
 
-@Component
+@Service
 class PromoCodeService(
         private val promoCodeRepository: PromoCodeRepository
 ) {

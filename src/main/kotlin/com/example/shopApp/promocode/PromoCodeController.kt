@@ -40,6 +40,6 @@ class PromoCodeController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Secured(value = ["ADMIN"])
     fun deleteById(@PathVariable("promoCodeId") promoCodeId: String) {
-        return promoCodeService.deletePromoCode(promoCodeId)
+        promoCodeService.deletePromoCode(promoCodeId)
     }
 }
