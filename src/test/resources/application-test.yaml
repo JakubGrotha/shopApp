@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      show-sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  mail:
+    enabled: false
+    host: smtp.gmail.com
+    port: 587
+    username: SECRET
+    password: SECRET
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: password
+      database: shopApp
+      port: 27017
+      host: 127.0.0.1
+      auto-index-creation: true
