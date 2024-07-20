@@ -25,7 +25,7 @@ data class AppUser(
         val orders: List<Order>
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO()
+        return mutableListOf()
     }
 
     override fun getPassword(): String {

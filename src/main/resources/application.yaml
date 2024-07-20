@@ -2,7 +2,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-      show-sql: true
     open-in-view: false
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -32,5 +31,4 @@ app:
   cache:
     spec: maximumSize=500,expireAfterAccess=600s
 jwt:
-  secret-key: SECRET
   expiration: 3h

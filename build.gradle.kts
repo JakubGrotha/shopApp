@@ -43,6 +43,7 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-impl:0.12.3")
     implementation("com.opencsv:opencsv:5.9")
     implementation("com.github.ben-manes.caffeine:caffeine")
+    implementation("io.github.cdimascio:java-dotenv:5.2.2")
 
     runtimeOnly("org.flywaydb:flyway-core")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")

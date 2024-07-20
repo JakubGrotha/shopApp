@@ -1,5 +1,6 @@
 package com.example.shopApp.security.jwt
 
+import io.github.cdimascio.dotenv.Dotenv
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
@@ -11,10 +12,7 @@ import java.util.function.Function
 import javax.crypto.SecretKey
 
 @Component
-class JwtUtils(
-        private val jwtConfiguration: JwtConfiguration,
-        private val secretKey: String = jwtConfiguration.secretKey
-) {
+class JwtUtils(private val jwtConfiguration: JwtConfiguration, private val dotenv: Dotenv) {
 
     fun extractUsername(token: String): String? {
         return extractClaim(token, Claims::getSubject)
@@ -39,12 +37,12 @@ class JwtUtils(
 
     private fun generateToken(extraClaims: Map<String, Any>, userDetails: UserDetails): String {
         return Jwts.builder()
-                .claims(extraClaims)
-                .subject(userDetails.username)
-                .issuedAt(Date(System.currentTimeMillis()))
-                .expiration(Date(System.currentTimeMillis() + jwtConfiguration.expiration.toMillis()))
-                .signWith(getSigningKey())
-                .compact()
+            .claims(extraClaims)
+            .subject(userDetails.username)
+            .issuedAt(Date(System.currentTimeMillis()))
+            .expiration(Date(System.currentTimeMillis() + jwtConfiguration.expiration.toMillis()))
+            .signWith(getSigningKey())
+            .compact()
     }
 
     private fun <T> extractClaim(token: String, claimsResolver: Function<Claims, T>): T {
@@ -54,14 +52,15 @@ class JwtUtils(
 
     private fun extractAllClaims(token: String): Claims {
         return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .payload
+            .verifyWith(getSigningKey())
+            .build()
+            .parseSignedClaims(token)
+            .payload
     }
 
     private fun getSigningKey(): SecretKey {
-        val key = Decoders.BASE64.decode(secretKey)
-        return Keys.hmacShaKeyFor(key)
+        val secretKey = dotenv["SECRET_KEY"]
+        val decodedKey = Decoders.BASE64.decode(secretKey)
+        return Keys.hmacShaKeyFor(decodedKey)
     }
 }

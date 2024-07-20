@@ -1,6 +1,7 @@
 package com.example.shopApp.security
 
 import com.example.shopApp.security.jwt.JwtAuthFilter
+import io.github.cdimascio.dotenv.Dotenv
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -34,16 +35,18 @@ class SecurityConfiguration {
     @Bean
     fun authenticationManager(
         userDetailsService: UserDetailsService,
-        passwordEncoder: PasswordEncoder,
+        passwordEncoder: PasswordEncoder
     ): AuthenticationManager {
-        val daoAuthenticationProvider = DaoAuthenticationProvider()
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService)
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder)
+        val daoAuthenticationProvider = DaoAuthenticationProvider().apply {
+            setUserDetailsService(userDetailsService)
+            setPasswordEncoder(passwordEncoder)
+        }
         return ProviderManager(daoAuthenticationProvider)
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+    @Bean
+    fun dotenv(): Dotenv = Dotenv.load()
 }

@@ -21,16 +21,8 @@ class AppUserService(
 ) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails {
-        val appUser = appUserRepository.findAppUserByEmail(username)
+        return appUserRepository.findAppUserByEmail(username)
                 ?: throw UserNotFoundException("No user found with the following email: $username")
-        return User.builder()
-                .username(appUser.username)
-                .password(appUser.password)
-                .accountExpired(!appUser.isAccountNonExpired)
-                .accountLocked(!appUser.isAccountNonLocked)
-                .credentialsExpired(!appUser.isCredentialsNonExpired)
-                .disabled(!appUser.isEnabled)
-                .build()
     }
 
     @Transactional

@@ -12,8 +12,5 @@ import java.time.Duration
 class JwtConfiguration {
 
     @NotNull
-    lateinit var secretKey: String
-
-    @NotNull
     lateinit var expiration: Duration
 }
