@@ -12,16 +12,16 @@ class Address {
     @Column(name = "id", nullable = false)
     var id: Long? = null
 
-    @Column(name = "street_address")
+    @Column(name = "street_address", nullable = false)
     lateinit var streetAddress: String
 
-    @Column(name = "postal_code")
+    @Column(name = "postal_code", nullable = false)
     lateinit var postalCode: String
 
-    @Column(name = "city")
+    @Column(name = "city", nullable = false)
     lateinit var city: String
 
-    @Column(name = "country")
+    @Column(name = "country", nullable = false)
     lateinit var country: String
 
     @OneToOne

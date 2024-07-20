@@ -17,7 +17,7 @@ class PromoCodeLocalRepository(
         return promoCodeMongoRepository.save(promoCode)
     }
 
-    @Cacheable(cacheNames = [CacheNames.PROMO_CODE])
+    @Cacheable(cacheNames = [CacheNames.PROMO_CODE], key = "#code")
     override fun findByCode(code: String): PromoCode? {
         return promoCodeMongoRepository.findByCode(code)
     }
@@ -26,8 +26,9 @@ class PromoCodeLocalRepository(
         return findByCode(code) != null
     }
 
-    @CacheEvict(cacheNames = [CacheNames.PROMO_CODE])
+    @CacheEvict(cacheNames = [CacheNames.PROMO_CODE], key = "#code")
     override fun deleteByCode(code: String): Boolean {
-        return promoCodeMongoRepository.deleteByCode(code)
+        val result = promoCodeMongoRepository.deleteByCode(code)
+        return result > 0
     }
 }

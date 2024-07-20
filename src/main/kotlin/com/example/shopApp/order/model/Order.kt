@@ -12,7 +12,7 @@ class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     var id: Long? = null
 
     @OneToMany(cascade = [CascadeType.ALL], targetEntity = OrderedItem::class)

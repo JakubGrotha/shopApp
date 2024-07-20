@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository
 interface PromoCodeMongoRepository : MongoRepository<PromoCode, String> {
 
     fun findByCode(code: String): PromoCode?
-    fun deleteByCode(code: String): Boolean
+    fun deleteByCode(code: String): Long
 }

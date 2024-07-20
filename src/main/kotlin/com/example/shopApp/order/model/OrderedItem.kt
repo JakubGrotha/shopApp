@@ -9,9 +9,11 @@ class OrderedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     var id: Long? = null
 
     @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
     @JsonBackReference
     var order: Order? = null
 

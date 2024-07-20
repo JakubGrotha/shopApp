@@ -1,9 +1,6 @@
 package com.example.shopApp.product
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import java.math.BigDecimal
 
 @Entity
@@ -11,12 +8,16 @@ class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     var id: Long? = null
 
+    @Column(name = "name", nullable = false)
     lateinit var name: String
 
+    @Column(name = "price", nullable = false)
     lateinit var price: BigDecimal
 
+    @Column(name = "quantity", nullable = false)
     var quantity: Int = 0
 
     companion object {
