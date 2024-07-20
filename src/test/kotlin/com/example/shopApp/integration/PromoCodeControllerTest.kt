@@ -12,10 +12,6 @@ import java.time.LocalDate
 
 class PromoCodeControllerTest : AbstractIntegrationTest() {
 
-    companion object {
-        private const val PROMO_CODE_URL = "/promo-code"
-    }
-
     @Test
     fun `should add new promo code`() {
         // given
@@ -27,7 +23,7 @@ class PromoCodeControllerTest : AbstractIntegrationTest() {
         )
 
         // when & then
-        mockMvc.perform(post("$PROMO_CODE_URL/new")
+        mockMvc.perform(post("/promo-code/new")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request))
         )
@@ -54,7 +50,7 @@ class PromoCodeControllerTest : AbstractIntegrationTest() {
         promoCodeMongoRepository.save(promoCode)
 
         // when & then
-        mockMvc.perform(post("$PROMO_CODE_URL/new")
+        mockMvc.perform(post("/promo-code/new")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request))
         )
