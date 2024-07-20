@@ -1,13 +1,17 @@
 package com.example.shopApp.product
 
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/product")
 class ProductController(
-        private val productService: ProductService
+    private val productService: ProductService,
 ) {
 
     @GetMapping("/{productId}")
@@ -31,5 +35,18 @@ class ProductController(
     @Secured(value = ["ADMIN"])
     fun addNewProduct(@RequestBody newProduct: ProductRequest) {
         productService.addNewProduct(newProduct)
+    }
+
+    @GetMapping("/csv")
+    fun exportAllProductDataInCsv(): ResponseEntity<ByteArrayResource> {
+        val productsCsv = productService.getAllProductDataInCsv()
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.parseMediaType("text/csv")
+            add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=products.csv")
+        }
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(productsCsv.contentLength())
+            .body(productsCsv)
     }
 }

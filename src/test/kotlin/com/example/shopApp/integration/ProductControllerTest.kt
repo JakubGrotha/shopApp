@@ -1,18 +1,17 @@
 package com.example.shopApp.integration
 
+import com.example.shopApp.product.Product
 import com.example.shopApp.product.ProductRequest
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.math.BigDecimal
 
 class ProductControllerTest : AbstractIntegrationTest() {
-
-    companion object {
-        private const val PRODUCT_URL = "/product"
-    }
 
     @Test
     fun `should save new product to database`() {
@@ -21,11 +20,42 @@ class ProductControllerTest : AbstractIntegrationTest() {
 
         // when & then
         mockMvc.perform(
-                post(PRODUCT_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(request))
+            post("/product")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(request))
         )
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isCreated)
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isCreated)
+    }
+
+    @Test
+    fun `should return all products in csv format`() {
+        // given
+        val products = listOf(
+            Product(null, "Product1", BigDecimal.valueOf(1), 10),
+            Product(null, "Product2", BigDecimal.valueOf(2), 20),
+            Product(null, "Product3", BigDecimal.valueOf(3), 30),
+            Product(null, "Product4", BigDecimal.valueOf(4), 40)
+        )
+        productRepository.saveAll(products)
+
+        // when & then
+        mockMvc.perform(get("/product/csv"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpectAll(
+                status().isOk,
+                header().string(HttpHeaders.CONTENT_TYPE, "text/csv"),
+                header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=products.csv"),
+                content().string(
+                    """
+                        Name;Price;Quantity
+                        Product1;1;10
+                        Product2;2;20
+                        Product3;3;30
+                        Product4;4;40
+                        
+                    """.trimIndent()
+                )
+            )
     }
 }

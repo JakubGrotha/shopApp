@@ -30,6 +30,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -37,14 +40,11 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt:0.12.3")
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")
     implementation("io.jsonwebtoken:jjwt-impl:0.12.3")
-    implementation("org.springframework.boot:spring-boot-starter-mail:3.2.2")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.3")
+    implementation("com.opencsv:opencsv:5.9")
     runtimeOnly("org.flywaydb:flyway-core:10.13.0")
     runtimeOnly("org.flywaydb:flyway-database-postgresql:10.13.0")
-
-
-    compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
+    compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
     testImplementation("org.testcontainers:junit-jupiter:1.19.6")
