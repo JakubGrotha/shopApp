@@ -1,13 +1,16 @@
 package com.example.shopApp.integration
 
+import com.example.shopApp.order.OrderRepository
 import com.example.shopApp.product.ProductRepository
 import com.example.shopApp.promocode.PromoCodeMongoRepository
+import com.example.shopApp.user.AppUserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.util.TestPropertyValues
+import org.springframework.cache.CacheManager
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.test.context.ActiveProfiles
@@ -18,7 +21,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.lifecycle.Startables
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @ContextConfiguration(initializers = [AbstractIntegrationTest.Companion.Initializer::class])
 @AutoConfigureMockMvc(addFilters = false)
@@ -34,16 +37,37 @@ abstract class AbstractIntegrationTest {
     protected lateinit var promoCodeMongoRepository: PromoCodeMongoRepository
 
     @Autowired
+    private lateinit var orderRepository: OrderRepository
+
+    @Autowired
     protected lateinit var productRepository: ProductRepository
+
+    @Autowired
+    private lateinit var appUserRepository: AppUserRepository
+
+    @Autowired
+    private lateinit var addressRepository: AppUserRepository
+
+    @Autowired
+    private lateinit var cacheManager: CacheManager
 
     @BeforeEach
     fun setUp() {
         cleanDatabases()
+        clearCache()
     }
 
     private fun cleanDatabases() {
         promoCodeMongoRepository.deleteAll()
+        orderRepository.deleteAll()
         productRepository.deleteAll()
+        appUserRepository.deleteAll()
+        addressRepository.deleteAll()
+    }
+
+    private fun clearCache() {
+        cacheManager.cacheNames
+            .forEach { cacheManager.getCache(it)?.clear() }
     }
 
     companion object {

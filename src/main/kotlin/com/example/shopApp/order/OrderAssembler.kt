@@ -5,7 +5,7 @@ import com.example.shopApp.order.model.Order
 import com.example.shopApp.order.model.OrderedItem
 import com.example.shopApp.product.Product
 import com.example.shopApp.product.ProductService
-import com.example.shopApp.user.AppUser
+import com.example.shopApp.user.AppUserEntity
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
@@ -15,7 +15,7 @@ class OrderAssembler(
     private val orderValidator: OrderValidator
 ) {
 
-    fun assemble(request: NewOrderRequest, appUser: AppUser): Order {
+    fun assemble(request: NewOrderRequest, appUserEntity: AppUserEntity): Order {
         val productsItemsPairs = request.orderedItems.map { it to productService.getProductById(it.productId) }.toList()
         orderValidator.validate(productsItemsPairs)
         val items = getProductItems(productsItemsPairs)
@@ -23,7 +23,7 @@ class OrderAssembler(
             id = null,
             orderedItems = items,
             totalPrice = calculateTotalPrice(items),
-            appUser = appUser,
+            appUserEntity = appUserEntity,
             dateOfOrderTimestamp = request.timestamp,
             isDelivered = false
         )

@@ -24,15 +24,15 @@ class JwtUtils(private val jwtConfiguration: JwtConfiguration, private val doten
     }
 
     fun generateToken(userDetails: UserDetails): String {
-        return generateToken(HashMap<String, Any>(), userDetails)
-    }
-
-    private fun extractExpiration(token: String): Date {
-        return extractClaim(token, Claims::getExpiration)
+        return generateToken(HashMap(), userDetails)
     }
 
     private fun isTokenExpired(token: String): Boolean {
         return extractExpiration(token).before(Date())
+    }
+
+    private fun extractExpiration(token: String): Date {
+        return extractClaim(token, Claims::getExpiration)
     }
 
     private fun generateToken(extraClaims: Map<String, Any>, userDetails: UserDetails): String {

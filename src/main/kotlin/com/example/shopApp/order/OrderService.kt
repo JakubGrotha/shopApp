@@ -20,12 +20,12 @@ class OrderService(
 
     fun getOrderById(orderId: Long): Order {
         return orderRepository.findById(orderId)
-                .orElseThrow { OrderNotFoundException("No order found with the following id: $orderId") }
+            .orElseThrow { OrderNotFoundException("No order found with the following id: $orderId") }
     }
 
     fun addNewOrder(request: NewOrderRequest) {
         val appUser = appUserRepository.findById(request.userId)
-                .orElseThrow { UserNotFoundException("No user found with the following id: ${request.userId}") }
+            .orElseThrow { UserNotFoundException("No user found with the following id: ${request.userId}") }
         val order = orderAssembler.assemble(request, appUser)
         order.orderedItems.forEach { it.order = order }
         orderRepository.save(order)
@@ -34,7 +34,7 @@ class OrderService(
     fun getOrderPageForUser(pageNumber: Int, pageSize: Int, principal: Principal): Page<Order> {
         val pageable: Pageable = PageRequest.of(pageNumber, pageSize)
         val user = appUserRepository.findAppUserByEmail(principal.name)
-                ?: throw UserNotFoundException("No user found with the following email: ${principal.name}")
-        return orderRepository.findAllByAppUser(user, pageable)
+            ?: throw UserNotFoundException("No user found with the following email: ${principal.name}")
+        return orderRepository.findAllByAppUserEntity(user, pageable)
     }
 }

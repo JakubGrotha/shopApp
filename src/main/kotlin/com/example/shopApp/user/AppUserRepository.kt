@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AppUserRepository : JpaRepository<AppUser, Long> {
+interface AppUserRepository : JpaRepository<AppUserEntity, Long> {
 
-    fun findAppUserByEmail(email: String): AppUser?
+    fun findAppUserByEmail(email: String): AppUserEntity?
 
     fun existsByEmail(email: String): Boolean
 }

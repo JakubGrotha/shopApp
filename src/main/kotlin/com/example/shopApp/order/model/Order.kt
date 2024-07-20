@@ -1,6 +1,6 @@
 package com.example.shopApp.order.model
 
-import com.example.shopApp.user.AppUser
+import com.example.shopApp.user.AppUserEntity
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
@@ -23,7 +23,7 @@ data class Order(
         @ManyToOne
         @JoinColumn(name = "user_id")
         @JsonBackReference
-        val appUser: AppUser?
+        val appUserEntity: AppUserEntity?
 ) {
     override fun toString(): String {
         return "Order(id=$id," +
@@ -31,6 +31,6 @@ data class Order(
                 " totalPrice=$totalPrice," +
                 " dateOfOrderTimestamp=$dateOfOrderTimestamp," +
                 " isDelivered=$isDelivered)" +
-                " userId=${appUser?.id}"
+                " userId=${appUserEntity?.id}"
     }
 }

@@ -6,7 +6,6 @@ import com.example.shopApp.security.model.RegistrationRequest
 import com.example.shopApp.user.exception.UserAlreadyExistsException
 import com.example.shopApp.user.exception.UserNotFoundException
 import jakarta.transaction.Transactional
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -14,15 +13,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class AppUserService(
-        private val appUserRepository: AppUserRepository,
-        private val passwordEncoder: PasswordEncoder,
-        private val emailConfiguration: EmailConfiguration,
-        private val emailService: EmailService
+    private val appUserRepository: AppUserRepository,
+    private val passwordEncoder: PasswordEncoder,
+    private val emailConfiguration: EmailConfiguration,
+    private val emailService: EmailService
 ) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails {
         return appUserRepository.findAppUserByEmail(username)
-                ?: throw UserNotFoundException("No user found with the following email: $username")
+            ?.toAppUser()
+            ?: throw UserNotFoundException("No user found with the following email: $username")
     }
 
     @Transactional
@@ -31,8 +31,9 @@ class AppUserService(
         checkIfUserAlreadyExists(appUserEmail)
         val encodedPassword = passwordEncoder.encode(request.password)
         val appUser = AppUser.fromRegistrationRequest(request, encodedPassword)
-        appUser.address.appUser = appUser
-        appUserRepository.save(appUser)
+        val appUserEntity = AppUserEntity.fromAppUser(appUser)
+        appUserEntity.address.appUserEntity = appUserEntity
+        appUserRepository.save(appUserEntity)
         sendEmailConfirmation(appUserEmail)
         return appUser
     }
