@@ -51,7 +51,7 @@ class PromoCodeControllerTest : AbstractIntegrationTest() {
                 startDate = LocalDate.of(2022, 1, 1),
                 endDate = LocalDate.of(2022, 2, 1)
         )
-        promoCodeRepository.save(promoCode)
+        promoCodeMongoRepository.save(promoCode)
 
         // when & then
         mockMvc.perform(post("$PROMO_CODE_URL/new")

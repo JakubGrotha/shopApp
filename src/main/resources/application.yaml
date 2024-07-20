@@ -28,6 +28,9 @@ spring:
       host: 127.0.0.1
       auto-index-creation: true
 
+app:
+  cache:
+    spec: maximumSize=500,expireAfterAccess=600s
 jwt:
   secret-key: SECRET
   expiration: 3h

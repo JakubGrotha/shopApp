@@ -39,6 +39,7 @@ class AppUserService(
         checkIfUserAlreadyExists(appUserEmail)
         val encodedPassword = passwordEncoder.encode(request.password)
         val appUser = AppUser.fromRegistrationRequest(request, encodedPassword)
+        appUser.address.appUser = appUser
         appUserRepository.save(appUser)
         sendEmailConfirmation(appUserEmail)
         return appUser

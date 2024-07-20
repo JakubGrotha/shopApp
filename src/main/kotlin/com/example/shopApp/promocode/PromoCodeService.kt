@@ -17,7 +17,7 @@ class PromoCodeService(
         if (promoCodeRepository.existsByCode(promoCode.code)) {
             throw PromoCodeAlreadyExistsException("Promo code already exists!")
         }
-        promoCodeRepository.insert(promoCode)
+        promoCodeRepository.addNewCode(promoCode)
     }
 
     fun validate(code: String): ValidationResult {
@@ -35,8 +35,8 @@ class PromoCodeService(
         return promoCode.toPromoCodeDto()
     }
 
-    fun deletePromoCode(promoCodeId: String) {
-        promoCodeRepository.deleteById(promoCodeId)
+    fun deletePromoCode(code: String) {
+        promoCodeRepository.deleteByCode(code)
     }
 
     sealed interface ValidationResult {

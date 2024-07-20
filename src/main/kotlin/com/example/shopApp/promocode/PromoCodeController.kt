@@ -36,10 +36,10 @@ class PromoCodeController(
         }
     }
 
-    @DeleteMapping("/{promoCodeId}")
+    @DeleteMapping("/{code}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Secured(value = ["ADMIN"])
-    fun deleteById(@PathVariable("promoCodeId") promoCodeId: String) {
-        promoCodeService.deletePromoCode(promoCodeId)
+    fun deleteById(@PathVariable("code") code: String) {
+        promoCodeService.deletePromoCode(code)
     }
 }
