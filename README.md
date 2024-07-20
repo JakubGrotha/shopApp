@@ -16,6 +16,10 @@ docker-compose up -d
 
 Make sure you have Docker Desktop (or Colima) installed and running if you're not using Linux
 
+#### JWT
+
+This application uses JWT authentication. In order to test it you need to create a `.env` file in the root folder and specify an appropriate `SECRET_KEY` value
+
 #### Authentication
 
 Before you can test any of the endpoints in the `order`, `product` or `promocode` packages, you first need to create an account. You can use any credentials, for example:
