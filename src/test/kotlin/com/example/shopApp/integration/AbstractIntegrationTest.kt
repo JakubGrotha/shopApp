@@ -2,7 +2,6 @@ package com.example.shopApp.integration
 
 import com.example.shopApp.product.ProductRepository
 import com.example.shopApp.promocode.PromoCodeMongoRepository
-import com.example.shopApp.promocode.PromoCodeRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
@@ -27,16 +25,16 @@ import org.testcontainers.lifecycle.Startables
 abstract class AbstractIntegrationTest {
 
     @Autowired
-    lateinit var mockMvc: MockMvc
+    protected lateinit var mockMvc: MockMvc
 
     @Autowired
-    lateinit var objectMapper: ObjectMapper
+    protected lateinit var objectMapper: ObjectMapper
 
     @Autowired
-    lateinit var promoCodeMongoRepository: PromoCodeMongoRepository
+    protected lateinit var promoCodeMongoRepository: PromoCodeMongoRepository
 
     @Autowired
-    lateinit var productRepository: ProductRepository
+    protected lateinit var productRepository: ProductRepository
 
     @BeforeEach
     fun setUp() {
