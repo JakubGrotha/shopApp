@@ -42,10 +42,14 @@ class OrderAssemblerTest {
 
         // when
         `when`(productService.getProductById(123)).thenReturn(
-            Product(id = 123, name = "product", price = BigDecimal.valueOf(10), quantity = Integer.MAX_VALUE)
+            Product().apply {
+                id = 123; name = "product"; price = BigDecimal.valueOf(10); quantity = Integer.MAX_VALUE
+            }
         )
         `when`(productService.getProductById(222)).thenReturn(
-            Product(id = 222, name = "product", price = BigDecimal.valueOf(20), quantity = Integer.MAX_VALUE)
+            Product().apply {
+                id = 222; name = "product"; price = BigDecimal.valueOf(20); quantity = Integer.MAX_VALUE
+            }
         )
 
         // then
@@ -61,14 +65,12 @@ class OrderAssemblerTest {
                 email = "john@example.com"
                 password = "password"
                 role = AppUserRole.CUSTOMER
-                address = Address(
-                    id = null,
-                    appUserEntity = null,
-                    streetAddress = "Tuwima 1",
-                    city = "Warsaw",
-                    postalCode = "00-000",
+                address = Address().apply {
+                    streetAddress = "Tuwima 1"
+                    city = "Warsaw"
+                    postalCode = "00-000"
                     country = "Poland"
-                )
+                }
                 orders = listOf()
             }
     }

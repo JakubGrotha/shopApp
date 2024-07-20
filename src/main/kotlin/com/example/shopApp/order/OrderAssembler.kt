@@ -19,28 +19,25 @@ class OrderAssembler(
         val productsItemsPairs = request.orderedItems.map { it to productService.getProductById(it.productId) }.toList()
         orderValidator.validate(productsItemsPairs)
         val items = getProductItems(productsItemsPairs)
-        return Order(
-            id = null,
-            orderedItems = items,
-            totalPrice = calculateTotalPrice(items),
-            appUserEntity = appUserEntity,
-            dateOfOrderTimestamp = request.timestamp,
-            isDelivered = false
-        )
+        return Order().apply {
+            this.orderedItems = items
+            this.totalPrice = calculateTotalPrice(items)
+            this.appUserEntity = appUserEntity
+            this.dateOfOrderTimestamp = request.timestamp
+            this.isDelivered = false
+        }
     }
 
     private fun getProductItems(pairs: List<Pair<NewOrderRequest.Item, Product>>): List<OrderedItem> {
         return pairs.map {
             val item = it.first
             val product = it.second
-            OrderedItem(
-                id = null,
-                order = null,
-                productId = item.productId,
-                name = product.name,
-                quantity = item.quantity,
+            OrderedItem().apply {
+                productId = item.productId
+                name = product.name
+                quantity = item.quantity
                 pricePerItem = product.price
-            )
+            }
         }.toList()
     }
 

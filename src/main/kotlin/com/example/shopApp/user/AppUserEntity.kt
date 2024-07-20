@@ -6,30 +6,30 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "app_user")
-open class AppUserEntity {
+class AppUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    open var id: Long? = null
+    var id: Long? = null
 
     @Column(name = "email", nullable = false)
-    open lateinit var email: String
+    lateinit var email: String
 
     @Column(name = "password", nullable = false)
-    open lateinit var password: String
+    lateinit var password: String
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role", nullable = false)
-    open lateinit var role: AppUserRole
+    lateinit var role: AppUserRole
 
     @OneToOne(mappedBy = "appUserEntity", cascade = [CascadeType.ALL])
     @JsonManagedReference
-    open lateinit var address: Address
+    lateinit var address: Address
 
-    @OneToMany(mappedBy = "appUserEntity")
+    @OneToMany(mappedBy = "appUserEntity", targetEntity = Order::class)
     @JsonManagedReference
-    open lateinit var orders: List<Order>
+    lateinit var orders: List<Order>
 
     fun toAppUser(): AppUser =
         AppUser(

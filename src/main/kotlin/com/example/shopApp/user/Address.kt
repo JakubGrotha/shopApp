@@ -5,19 +5,30 @@ import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
-data class Address(
+class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long?,
-    val streetAddress: String,
-    val postalCode: String,
-    val city: String,
-    val country: String,
+    @Column(name = "id", nullable = false)
+    var id: Long? = null
+
+    @Column(name = "street_address")
+    lateinit var streetAddress: String
+
+    @Column(name = "postal_code")
+    lateinit var postalCode: String
+
+    @Column(name = "city")
+    lateinit var city: String
+
+    @Column(name = "country")
+    lateinit var country: String
+
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     @JsonBackReference
-    var appUserEntity: AppUserEntity?
-) {
+    var appUserEntity: AppUserEntity? = null
+
     override fun toString(): String {
         return "Address(id=$id," +
                 " streetAddress='$streetAddress'," +
@@ -29,14 +40,12 @@ data class Address(
 
     companion object {
         fun fromRegistrationRequest(request: RegistrationRequest): Address {
-            return Address(
-                id = null,
-                streetAddress = request.streetAddress,
-                postalCode = request.postalCode,
-                city = request.city,
-                country = request.country,
-                appUserEntity = null
-            )
+            return Address().apply {
+                streetAddress = request.streetAddress
+                postalCode = request.postalCode
+                city = request.city
+                country = request.country
+            }
         }
     }
 }

@@ -46,7 +46,7 @@ class OrderValidatorTest {
         private fun createItemWithQuantity(quantity: Int) = NewOrderRequest.Item(Random.nextLong(100), quantity)
 
         private fun createProductWithQuantity(quantity: Int) =
-            Product(Random.nextLong(), "name", BigDecimal.TEN, quantity)
+            Product().apply { id = Random.nextLong(); name = "name"; price = BigDecimal.TEN; this.quantity = quantity }
 
         @JvmStatic
         private fun invalidOrders(): List<Arguments> {

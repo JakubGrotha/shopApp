@@ -32,10 +32,10 @@ class ProductControllerTest : AbstractIntegrationTest() {
     fun `should return all products in csv format`() {
         // given
         val products = listOf(
-            Product(null, "Product1", BigDecimal.valueOf(1), 10),
-            Product(null, "Product2", BigDecimal.valueOf(2), 20),
-            Product(null, "Product3", BigDecimal.valueOf(3), 30),
-            Product(null, "Product4", BigDecimal.valueOf(4), 40)
+            getProduct("Product1", BigDecimal.valueOf(1), 10),
+            getProduct("Product2", BigDecimal.valueOf(2), 20),
+            getProduct("Product3", BigDecimal.valueOf(3), 30),
+            getProduct("Product4", BigDecimal.valueOf(4), 40)
         )
         productRepository.saveAll(products)
 
@@ -58,4 +58,7 @@ class ProductControllerTest : AbstractIntegrationTest() {
                 )
             )
     }
+
+    private fun getProduct(name: String, price: BigDecimal, quantity: Int): Product =
+        Product().apply { this.name = name; this.price = price; this.quantity = quantity }
 }
