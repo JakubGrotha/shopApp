@@ -17,12 +17,10 @@ import org.springframework.test.web.servlet.MockMvc
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.lifecycle.Startables
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Testcontainers
 @ContextConfiguration(initializers = [AbstractIntegrationTest.Companion.Initializer::class])
 @AutoConfigureMockMvc(addFilters = false)
 abstract class AbstractIntegrationTest {
@@ -53,18 +51,14 @@ abstract class AbstractIntegrationTest {
 
         @Container
         private val postgres = PostgreSQLContainer<Nothing>("postgres:15")
-                .apply { withDatabaseName("test") }
-                .apply { withUsername("test") }
-                .apply { withPassword("test") }
+            .apply {
+                withDatabaseName("test")
+                withUsername("test")
+                withPassword("test")
+            }
 
         val mongo = MongoDBContainer("mongo:7.0")
-                .apply { withExposedPorts(27017) }
-
-        @BeforeAll
-        @JvmStatic
-        fun setup() {
-            mongo.start()
-        }
+            .apply { withExposedPorts(27017) }
 
         internal class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
 
@@ -75,10 +69,10 @@ abstract class AbstractIntegrationTest {
 
             override fun initialize(applicationContext: ConfigurableApplicationContext) {
                 TestPropertyValues.of(
-                        "spring.datasource.url=${postgres.jdbcUrl}",
-                        "spring.datasource.username=${postgres.username}",
-                        "spring.datasource.password=${postgres.password}",
-                        "spring.data.mongodb.uri=mongodb://${mongo.host}:${mongo.getMappedPort(27017)}"
+                    "spring.datasource.url=${postgres.jdbcUrl}",
+                    "spring.datasource.username=${postgres.username}",
+                    "spring.datasource.password=${postgres.password}",
+                    "spring.data.mongodb.uri=mongodb://${mongo.host}:${mongo.getMappedPort(27017)}"
                 ).applyTo(applicationContext.environment)
             }
         }
