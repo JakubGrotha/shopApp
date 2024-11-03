@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class EmailService(
-        private val emailConfiguration: EmailConfiguration,
-        private val mailSender: JavaMailSender
+    private val emailConfiguration: EmailConfiguration,
+    private val mailSender: JavaMailSender
 ) {
 
     fun sendRegistrationEmail(receiver: String) {
@@ -16,11 +16,11 @@ class EmailService(
     }
 
     private fun composeRegistrationEmail(receiver: String): SimpleMailMessage {
-        val message = SimpleMailMessage()
-        message.from = emailConfiguration.username
-        message.setTo(receiver)
-        message.subject = "ShopApp - Sign up confirmation"
-        message.text = "Welcome to ShopApp - you are now signed up"
-        return message
+        return SimpleMailMessage().apply {
+            from = emailConfiguration.username
+            setTo(receiver)
+            subject = "ShopApp - Sign up confirmation"
+            text = "Welcome to ShopApp - you are now signed up"
+        }
     }
 }

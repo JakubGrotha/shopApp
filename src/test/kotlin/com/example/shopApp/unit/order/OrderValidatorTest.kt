@@ -9,6 +9,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.math.BigDecimal
 import kotlin.random.Random
@@ -51,19 +52,19 @@ class OrderValidatorTest {
         @JvmStatic
         private fun invalidOrders(): List<Arguments> {
             return listOf(
-                Arguments.arguments(
+                arguments(
                     listOf(createItemWithQuantity(1) to createProductWithQuantity(0))
                 ),
-                Arguments.arguments(
+                arguments(
                     listOf(createItemWithQuantity(5) to createProductWithQuantity(3))
                 ),
-                Arguments.arguments(
+                arguments(
                     listOf(
                         createItemWithQuantity(2) to createProductWithQuantity(1),
                         createItemWithQuantity(3) to createProductWithQuantity(4)
                     )
                 ),
-                Arguments.arguments(
+                arguments(
                     listOf(
                         createItemWithQuantity(2) to createProductWithQuantity(1),
                         createItemWithQuantity(Integer.MAX_VALUE) to createProductWithQuantity(3),

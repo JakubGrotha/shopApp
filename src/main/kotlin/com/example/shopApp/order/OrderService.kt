@@ -8,6 +8,7 @@ import com.example.shopApp.user.exception.UserNotFoundException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.security.Principal
 
@@ -19,13 +20,13 @@ class OrderService(
 ) {
 
     fun getOrderById(orderId: Long): Order {
-        return orderRepository.findById(orderId)
-            .orElseThrow { OrderNotFoundException("No order found with the following id: $orderId") }
+        return orderRepository.findByIdOrNull(orderId)
+            ?: throw OrderNotFoundException("No order found with the following id: $orderId")
     }
 
     fun addNewOrder(request: NewOrderRequest) {
-        val appUser = appUserRepository.findById(request.userId)
-            .orElseThrow { UserNotFoundException("No user found with the following id: ${request.userId}") }
+        val appUser = appUserRepository.findByIdOrNull(request.userId)
+            ?: throw UserNotFoundException("No user found with the following id: ${request.userId}")
         val order = orderAssembler.assemble(request, appUser)
         order.orderedItems.forEach { it.order = order }
         orderRepository.save(order)

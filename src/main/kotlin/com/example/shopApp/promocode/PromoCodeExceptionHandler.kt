@@ -1,6 +1,7 @@
 package com.example.shopApp.promocode
 
 import com.example.shopApp.promocode.exception.PromoCodeAlreadyExistsException
+import com.example.shopApp.promocode.exception.PromoCodeNotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,9 +13,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 class PromoCodeExceptionHandler : ResponseEntityExceptionHandler() {
 
-    @ExceptionHandler(value = [PromoCodeAlreadyExistsException::class])
+    @ExceptionHandler(value = [PromoCodeAlreadyExistsException::class, PromoCodeNotFoundException::class])
     fun handlePromoCodeAlreadyExistsException(exception: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
         val responseBody = exception.message
-        return handleExceptionInternal(exception, responseBody, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
+        val httpStatus = getStatusCode(exception)
+        return handleExceptionInternal(exception, responseBody, HttpHeaders(), httpStatus, request)
+    }
+
+    private fun getStatusCode(exception: RuntimeException) = when (exception) {
+        is PromoCodeAlreadyExistsException -> HttpStatus.BAD_REQUEST
+        is PromoCodeNotFoundException -> HttpStatus.NOT_FOUND
+        else -> HttpStatus.INTERNAL_SERVER_ERROR
     }
 }
