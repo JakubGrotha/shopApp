@@ -16,7 +16,7 @@ class ProductControllerTest : AbstractIntegrationTest() {
     @Test
     fun `should save new product to database`() {
         // given
-        val request = ProductRequest("Barbie doll", BigDecimal.valueOf(5.5))
+        val request = builders.aProductRequest(name = "Barbie doll", price = BigDecimal.valueOf(5.5))
 
         // when & then
         mockMvc.perform(

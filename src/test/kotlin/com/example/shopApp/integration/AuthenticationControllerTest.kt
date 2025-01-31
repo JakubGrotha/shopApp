@@ -20,14 +20,7 @@ class AuthenticationControllerTest : AbstractIntegrationTest() {
     @Test
     fun `register should generate JWT`() {
         // given
-        val registrationRequest = RegistrationRequest(
-            email = "test@test.com",
-            password = "password",
-            streetAddress = "streetAddress",
-            postalCode = "00-000",
-            city = "city",
-            country = "country",
-        )
+        val registrationRequest = builders.aRegistrationRequest()
 
         // when
         val response = RestClient.create("http://127.0.0.1:$port").post()
@@ -48,14 +41,7 @@ class AuthenticationControllerTest : AbstractIntegrationTest() {
     @Test
     fun `JWT should be valid to add a product`() {
         // given
-        val registrationRequest = RegistrationRequest(
-            email = "test@test.com",
-            password = "password",
-            streetAddress = "streetAddress",
-            postalCode = "00-000",
-            city = "city",
-            country = "country",
-        )
+        val registrationRequest = builders.aRegistrationRequest()
 
         val response = RestClient.create("http://127.0.0.1:$port").post()
             .uri("/register")

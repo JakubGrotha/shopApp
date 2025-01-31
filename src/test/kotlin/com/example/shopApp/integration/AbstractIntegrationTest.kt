@@ -1,5 +1,6 @@
 package com.example.shopApp.integration
 
+import com.example.shopApp.common.Builders
 import com.example.shopApp.order.OrderRepository
 import com.example.shopApp.product.ProductRepository
 import com.example.shopApp.promocode.PromoCodeMongoRepository
@@ -71,6 +72,9 @@ abstract class AbstractIntegrationTest {
     }
 
     companion object {
+
+        @JvmStatic
+        protected val builders = Builders()
 
         @Container
         private val postgres = PostgreSQLContainer<Nothing>("postgres:15")

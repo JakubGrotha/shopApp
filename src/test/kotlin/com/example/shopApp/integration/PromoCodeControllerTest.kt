@@ -38,7 +38,7 @@ class PromoCodeControllerTest : AbstractIntegrationTest() {
     @Test
     fun `should not add new promo code if there exists another one with the same code value`() {
         // given
-        val request = NewPromoCodeRequest(
+        val request = builders.aNewPromoCodeRequest(
             code = "XYZ123",
             value = BigDecimal.valueOf(0.1),
             startDate = LocalDate.of(2023, 10, 9),
