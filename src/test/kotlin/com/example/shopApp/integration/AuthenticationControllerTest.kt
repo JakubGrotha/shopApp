@@ -1,7 +1,6 @@
 package com.example.shopApp.integration
 
 import com.example.shopApp.product.ProductRequest
-import com.example.shopApp.security.model.RegistrationRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.server.LocalServerPort

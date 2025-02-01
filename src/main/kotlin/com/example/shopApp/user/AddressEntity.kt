@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
-class Address {
+@Table(name = "address")
+class AddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +40,8 @@ class Address {
     }
 
     companion object {
-        fun fromRegistrationRequest(request: RegistrationRequest): Address {
-            return Address().apply {
+        fun fromRegistrationRequest(request: RegistrationRequest): AddressEntity {
+            return AddressEntity().apply {
                 streetAddress = request.streetAddress
                 postalCode = request.postalCode
                 city = request.city

@@ -11,7 +11,7 @@ data class AppUser(
     @get:JvmName("password")
     val password: String,
     val role: AppUserRole,
-    val address: Address,
+    val addressEntity: AddressEntity,
     val orders: List<Order>
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
@@ -49,7 +49,7 @@ data class AppUser(
                 id = null,
                 email = request.email,
                 password = encodedPassword,
-                address = Address.fromRegistrationRequest(request),
+                addressEntity = AddressEntity.fromRegistrationRequest(request),
                 role = AppUserRole.CUSTOMER,
                 orders = emptyList()
             )

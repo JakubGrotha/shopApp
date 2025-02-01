@@ -25,7 +25,7 @@ class AppUserEntity {
 
     @OneToOne(mappedBy = "appUserEntity", cascade = [CascadeType.ALL])
     @JsonManagedReference
-    lateinit var address: Address
+    lateinit var addressEntity: AddressEntity
 
     @OneToMany(mappedBy = "appUserEntity", targetEntity = Order::class)
     @JsonManagedReference
@@ -37,7 +37,7 @@ class AppUserEntity {
             email = this.email,
             password = this.password,
             role = this.role,
-            address = this.address,
+            addressEntity = this.addressEntity,
             orders = this.orders
         )
 
@@ -49,7 +49,7 @@ class AppUserEntity {
                 email = appUser.email
                 password = appUser.password
                 role = appUser.role
-                address = appUser.address
+                addressEntity = appUser.addressEntity
                 orders = appUser.orders
             }
     }

@@ -11,10 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
-import java.math.BigDecimal
-import kotlin.random.Random
 
-class OrderValidatorTest {
+class OrderValidatorTest : AbstractUnitTest() {
 
     private val validator = OrderValidator()
 
@@ -22,9 +20,9 @@ class OrderValidatorTest {
     fun `should pass validation if order is correct`() {
         // given
         val validPairsList = listOf(
-            createItemWithQuantity(3) to createProductWithQuantity(4),
-            createItemWithQuantity(1) to createProductWithQuantity(1),
-            createItemWithQuantity(10) to createProductWithQuantity(12)
+            builders.anItem(quantity = 1) to builders.aProduct(quantity = 4),
+            builders.anItem(quantity = 1) to builders.aProduct(quantity = 1),
+            builders.anItem(quantity = 10) to builders.aProduct(quantity = 12)
         )
 
         // when & then
@@ -42,33 +40,28 @@ class OrderValidatorTest {
         assertThrows<InvalidOrderException> { validator.validate(pairs) }
     }
 
-    companion object {
-
-        private fun createItemWithQuantity(quantity: Int) = NewOrderRequest.Item(Random.nextLong(100), quantity)
-
-        private fun createProductWithQuantity(quantity: Int) =
-            Product().apply { id = Random.nextLong(); name = "name"; price = BigDecimal.TEN; this.quantity = quantity }
+    private companion object {
 
         @JvmStatic
         private fun invalidOrders(): List<Arguments> {
             return listOf(
                 arguments(
-                    listOf(createItemWithQuantity(1) to createProductWithQuantity(0))
+                    listOf(builders.anItem(quantity = 1) to builders.aProduct(quantity = 0))
                 ),
                 arguments(
-                    listOf(createItemWithQuantity(5) to createProductWithQuantity(3))
+                    listOf(builders.anItem(quantity = 5) to builders.aProduct(quantity = 3))
                 ),
                 arguments(
                     listOf(
-                        createItemWithQuantity(2) to createProductWithQuantity(1),
-                        createItemWithQuantity(3) to createProductWithQuantity(4)
+                        builders.anItem(quantity = 2) to builders.aProduct(quantity = 1),
+                        builders.anItem(quantity = 3) to builders.aProduct(quantity = 4)
                     )
                 ),
                 arguments(
                     listOf(
-                        createItemWithQuantity(2) to createProductWithQuantity(1),
-                        createItemWithQuantity(Integer.MAX_VALUE) to createProductWithQuantity(3),
-                        createItemWithQuantity(3) to createProductWithQuantity(6)
+                        builders.anItem(quantity = 2) to builders.aProduct(quantity = 1),
+                        builders.anItem(quantity = Integer.MAX_VALUE) to builders.aProduct(quantity = 3),
+                        builders.anItem(quantity = 3) to builders.aProduct(quantity = 6)
                     )
                 )
             )

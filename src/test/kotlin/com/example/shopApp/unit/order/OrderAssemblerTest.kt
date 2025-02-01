@@ -3,11 +3,7 @@ package com.example.shopApp.unit.order
 import com.example.shopApp.order.OrderAssembler
 import com.example.shopApp.order.OrderValidator
 import com.example.shopApp.order.model.NewOrderRequest
-import com.example.shopApp.product.Product
 import com.example.shopApp.product.ProductService
-import com.example.shopApp.user.Address
-import com.example.shopApp.user.AppUserEntity
-import com.example.shopApp.user.AppUserRole
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,7 +12,7 @@ import org.mockito.Mockito.`when`
 import java.math.BigDecimal
 import java.time.Instant
 
-class OrderAssemblerTest {
+class OrderAssemblerTest : AbstractUnitTest() {
 
     private val orderValidator: OrderValidator = mock(OrderValidator::class.java)
     private val productService: ProductService = mock(ProductService::class.java)
@@ -38,40 +34,18 @@ class OrderAssemblerTest {
                 NewOrderRequest.Item(222, 5)
             )
         )
-        val appUserEntity = createUser()
+        val appUserEntity = builders.anAppUserEntity()
 
         // when
         `when`(productService.getProductById(123)).thenReturn(
-            Product().apply {
-                id = 123; name = "product"; price = BigDecimal.valueOf(10); quantity = Integer.MAX_VALUE
-            }
+            builders.aProduct(id = 123, price = BigDecimal.valueOf(10))
         )
         `when`(productService.getProductById(222)).thenReturn(
-            Product().apply {
-                id = 222; name = "product"; price = BigDecimal.valueOf(20); quantity = Integer.MAX_VALUE
-            }
+            builders.aProduct(id = 222, price = BigDecimal.valueOf(20))
         )
 
         // then
         val result = orderAssembler.assemble(request, appUserEntity)
         assertThat(result.totalPrice).isEqualTo(BigDecimal.valueOf(140))
-    }
-
-    companion object {
-
-        private fun createUser(): AppUserEntity =
-            AppUserEntity().apply {
-                id = 1
-                email = "john@example.com"
-                password = "password"
-                role = AppUserRole.CUSTOMER
-                address = Address().apply {
-                    streetAddress = "Tuwima 1"
-                    city = "Warsaw"
-                    postalCode = "00-000"
-                    country = "Poland"
-                }
-                orders = listOf()
-            }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.shopApp.promocode
 
+import com.example.shopApp.promocode.PromoCodeService.ValidationResult.*
 import com.example.shopApp.promocode.exception.PromoCodeAlreadyExistsException
 import com.example.shopApp.promocode.exception.PromoCodeNotFoundException
 import com.example.shopApp.promocode.model.NewPromoCodeRequest
@@ -20,13 +21,12 @@ class PromoCodeService(private val promoCodeRepository: PromoCodeRepository) {
     }
 
     fun validate(code: String): ValidationResult {
-        val promoCode = promoCodeRepository.findByCode(code)
-        val endDate = promoCode?.endDate ?: return ValidationResult.CodeNotFound()
+        val promoCode = promoCodeRepository.findByCode(code) ?: return CodeNotFound()
         val now = LocalDate.now()
-        if (now.isBefore(endDate)) {
-            return ValidationResult.ValidationPassed
+        if (now.isAfter(promoCode.endDate)) {
+            return CodeHasExpired()
         }
-        return ValidationResult.CodeHasExpired()
+        return ValidationPassed
     }
 
     fun findPromoCodeByCode(code: String): PromoCodeDto {

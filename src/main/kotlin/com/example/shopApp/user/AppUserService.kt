@@ -32,7 +32,7 @@ class AppUserService(
         val encodedPassword = passwordEncoder.encode(request.password)
         val appUser = AppUser.fromRegistrationRequest(request, encodedPassword)
         val appUserEntity = AppUserEntity.fromAppUser(appUser)
-        appUserEntity.address.appUserEntity = appUserEntity
+        appUserEntity.addressEntity.appUserEntity = appUserEntity
         appUserRepository.save(appUserEntity)
         sendEmailConfirmation(appUserEmail)
         return appUser
